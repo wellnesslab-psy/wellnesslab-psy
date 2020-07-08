@@ -2,23 +2,76 @@ import React from 'react';
 import './App.css';
 import Anastasia from './anastasia_aivatoglou.png'
 import Chrysoula from './chrysoula_grigoropoulou.png'
+import Cover from './cover.jpg'
+import Facebook from './facebook.png'
+import Twitter from './twitter.png'
+import Instagram from './instagram.png'
+import LinkedIn from './linkedin.png'
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      articles: [],
-      team: [
-        {
-          name: "Anastasia Aivatoglou",
-          image: Anastasia
-        },
-        {
-          name: "Chrysoula Grigoropoulou",
-          image: Chrysoula
-        }
-      ]
+        articles: [],
+        team: [
+            {
+                name: "Αναστασία Αιβάτογλου",
+                image: Anastasia,
+                title: "Co-founder",
+                social: [
+                    {
+                        type: "facebook",
+                        url: ""
+                    },
+                    {
+                        type: "linkedin",
+                        url: ""
+                    },
+                    {
+                        type: "twitter",
+                        url: ""
+                    },
+                    {
+                        type: "mail",
+                        url: ""
+                    }
+                ]
+            }, {
+                name: "Χρύσα Γρηγοροπούλου",
+                image: Chrysoula,
+                title: "Co-founder",
+                social: [
+                    {
+                        type: "facebook",
+                        url: ""
+                    },
+                    {
+                        type: "linkedin",
+                        url: ""
+                    },
+                    {
+                        type: "mail",
+                        url: ""
+                    }
+                ]
+            }
+        ],
+        socialMedia: [
+            {
+                name: "Facebook",
+                url: "https://www.facebook.com/WellnessLab-104016004679802/"
+            }, {
+                name: "Instagram",
+                url: "https://www.instagram.com/wellnesslab__/?hl=en"
+            }, {
+                name: "LinkedIn",
+                url: "https://www.linkedin.com/company/wellnesslab-psy/"
+            }, {
+                name: "Twitter",
+                url: "https://twitter.com/WellnessLab_psy"
+            }
+        ]
     };
   }
 
@@ -40,6 +93,8 @@ class App extends React.Component {
   render() {
     const articleItems = [];
     const teamItems = [];
+    const socialItems = [];
+
     for (let i=0; i<this.state.articles.length; i++) {
       articleItems.push(
           <div className="col s12 m4 l4">
@@ -48,7 +103,9 @@ class App extends React.Component {
                 <img className="activator" src={this.state.articles[i].thumbnail}/>
               </div>
               <div className="card-content">
-                <span className="card-title activator grey-text text-darken-4">{this.state.articles[i].title}</span>
+                <span className="card-title activator grey-text text-darken-4">
+                    <a href={this.state.articles[i].link}>{this.state.articles[i].title} </a>
+                </span>
               </div>
             </div>
           </div>
@@ -56,20 +113,70 @@ class App extends React.Component {
     }
 
     for (let i=0; i<this.state.team.length; i++) {
-      teamItems.push(
+        const personSocial = [];
+        for (let j=0; j<this.state.team[i].social.length; j++) {
+            personSocial.push(
+                <a className="blue-text text-lighten-2" href={this.state.team[i].social[j].url} style={{padding: 5}}>
+                    <i className={
+                        this.state.team[i].social[j].type == "facebook"
+                            ? "fa fa-facebook"
+                            : this.state.team[i].social[j].type == "twitter"
+                                ? "fa fa-twitter"
+                                : this.state.team[i].social[j].type == "linkedin"
+                                    ? "fa fa-linkedin"
+                                    : "fa fa-envelope-o"
+                    }></i>
+                </a>
+            )
+        }
+
+        teamItems.push(
           <div className="col s12 m3">
-            <div className="card card-avatar">
-              <div className="waves-effect waves-block waves-light">
-                <img src={this.state.team[i].image}/>
+              <div className="card card-avatar">
+                  <div className="waves-effect waves-block waves-light">
+                      <img className="activator" src={this.state.team[i].image}/>
+                  </div>
+                  <div className="card-content">
+                        <span className="card-title activator grey-text text-darken-4">
+                            {this.state.team[i].name}<br/>
+                            <small>
+                                <em>
+                                    <a className="red-text text-darken-1" href="#">{this.state.team[i].title}</a>
+                                </em>
+                            </small>
+                        </span>
+                      <p>{personSocial}</p>
+                  </div>
               </div>
-              <div className="card-content">
-                <span className="card-title activator grey-text text-darken-4">
-                  {this.state.team[i].name}
-                </span>
-              </div>
-            </div>
           </div>
       )
+    }
+
+    for (let i=0; i<this.state.socialMedia.length; i++) {
+        socialItems.push(
+            <div className="col s12 m3">
+                <div className="card card-avatar">
+                    <div className="waves-effect waves-block waves-light">
+                        <img src={
+                            this.state.socialMedia[i].name == "Facebook"
+                                ? Facebook
+                                : this.state.socialMedia[i].name == "Twitter"
+                                    ? Twitter
+                                    : this.state.socialMedia[i].name == "Instagram"
+                                        ? Instagram
+                                        : LinkedIn
+                        }/>
+                    </div>
+                    <div className="card-content">
+                        <span className="card-title activator grey-text text-darken-4">
+                            <em>
+                                <a className="red-text text-darken-1" href={this.state.socialMedia[i].url}>{this.state.socialMedia[i].name}</a>
+                            </em>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -89,15 +196,15 @@ class App extends React.Component {
                 <div className="nav-wrapper">
                   <ul className="hide-on-med-and-down">
                     <li><a href="#intro">WellnessLab</a></li>
-                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#articles">Άρθρα</a></li>
                     <li><a href="#social">Social Media</a></li>
-                    <li><a href="#team">Team</a></li>
+                    <li><a href="#team">Ομάδα</a></li>
                   </ul>
                   <ul id="nav-mobile" className="side-nav">
                     <li><a href="#intro">WellnessLab</a></li>
-                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#articles">Άρθρα</a></li>
                     <li><a href="#social">Social Media</a></li>
-                    <li><a href="#team">Team</a></li>
+                    <li><a href="#team">Ομάδα</a></li>
                   </ul>
                   <a href="#" data-activates="nav-mobile" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
                 </div>
@@ -110,8 +217,8 @@ class App extends React.Component {
               <h1 className="text_h center header cd-headline letters type">
                 <span>WellnessLab </span>
                 <span className="cd-words-wrapper waiting">
-                  <b className="is-visible">for a healthy body</b>
-                  <b>for a healthy mind</b>
+                  <b className="is-visible">για υγειές σώμα</b>
+                  <b>για υγειή ψυχή</b>
                 </span>
               </h1>
             </div>
@@ -123,10 +230,7 @@ class App extends React.Component {
                 <div className="col s12">
 
                   <h2 className="center header text_h2">
-                    <span className="span_h2">Hello World!</span>
-                    I am <span className="span_h2">George Kortsaridis</span>. University student at University of
-                    Western Macedonia.
-                    A passionate coder, fantastic troubleshooter, and enthusiastic Software Developer.
+                    Το WellnessLab σας ενημερώνει για θέματα σωματικής υγείας και πώς αυτά επηρεάζουν την ψυχική μας υγεία. Προωθεί την προσωπική και συλλογική ευημερία και στοχεύει στην παροχή υποστήριξης σε ζητήματα που αφορούν τη σωματική και ψυχική ευεξία.
                   </h2>
 
                 </div>
@@ -137,7 +241,7 @@ class App extends React.Component {
 
           <div className="section scrollspy" id="work">
             <div className="container">
-              <h2 className="header text_b">Experience </h2>
+              <h2 className="header text_b">Άρθρα</h2>
               <div className="row">
                 {articleItems}
               </div>
@@ -145,12 +249,19 @@ class App extends React.Component {
           </div>
 
           <div className="parallax-container">
-            <div className="parallax"><img src="img/trekker_background.jpg"/></div>
+            <div className="parallax"><img src={Cover}/></div>
+          </div>
+
+          <div id="intro" className="section scrollspy">
+            <div className="container">
+              <h2 className="header text_b"> Social Media </h2>
+              <div className="row"> {socialItems}</div>
+            </div>
           </div>
 
           <div className="section scrollspy" id="team">
             <div className="container">
-              <h2 className="header text_b"> The team </h2>
+              <h2 className="header text_b"> Ομάδα </h2>
               <div className="row"> {teamItems}</div>
             </div>
           </div>
@@ -158,61 +269,7 @@ class App extends React.Component {
           <footer id="contact" className="page-footer default_color scrollspy">
             <div className="container">
               <div className="row">
-                <div className="col l6 s12">
-                  <form className="col s12" action="contact.php" method="post">
-                    <div className="row">
-                      <div className="input-field col s6">
-                        <i className="mdi-action-account-circle prefix white-text"></i>
-                        <input id="icon_prefix" name="name" type="text" className="validate white-text"/>
-                          <label htmlFor="icon_prefix" className="white-text">First Name</label>
-                      </div>
-                      <div className="input-field col s6">
-                        <i className="mdi-communication-email prefix white-text"></i>
-                        <input id="icon_email" name="email" type="email" className="validate white-text"/>
-                          <label htmlFor="icon_email" className="white-text">Email-id</label>
-                      </div>
-                      <div className="input-field col s12">
-                        <i className="mdi-editor-mode-edit prefix white-text"></i>
-                        <textarea id="icon_prefix2" name="message" className="materialize-textarea white-text"></textarea>
-                        <label htmlFor="icon_prefix2" className="white-text">Message</label>
-                      </div>
-                      <div className="col offset-s7 s5">
-                      </div>
-                    </div>
-                  </form>
-                </div>
 
-
-                <div className="col l3 s12">
-                  <h5 className="white-text">George Kortsaridis</h5>
-                  <ul>
-                    <li className="white-text">Tel : +30 6948361083</li>
-                    <li className="white-text">Mail : gkortsaridis@gmail.com</li>
-                    <li className="white-text">Address : V. Mikrou 4, Kozani, 50100</li>
-                  </ul>
-
-                </div>
-
-                <div className="col l3 s12">
-                  <h5 className="white-text">Social</h5>
-                  <ul>
-                    <li>
-                      <a className="white-text" href="https://www.facebook.com/gkortsaridis">
-                        <i className="small fa fa-facebook-square white-text"></i> Facebook
-                      </a>
-                    </li>
-                    <li>
-                      <a className="white-text" href="https://github.com/gkortsaridis">
-                        <i className="small fa fa-github-square white-text"></i> Github
-                      </a>
-                    </li>
-                    <li>
-                      <a className="white-text" href="https://www.linkedin.com/in/georgekortsaridis">
-                        <i className="small fa fa-linkedin-square white-text"></i> Linkedin
-                      </a>
-                    </li>
-                  </ul>
-                </div>
               </div>
             </div>
             <div className="footer-copyright default_color">
